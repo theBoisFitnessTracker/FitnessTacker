@@ -5,5 +5,26 @@
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
     "pg": "^8.8.0"
+  },
+  "name": "fitnesstacker",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/theBoisFitnessTracker/FitnessTacker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/theBoisFitnessTracker/FitnessTacker/issues"
+  },
+  "homepage": "https://github.com/theBoisFitnessTracker/FitnessTacker#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.20"
   }
 }
