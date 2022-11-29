@@ -1,8 +1,8 @@
 //All tasks
--Build DB
+*-Build DB
 -Ability to register an account (no duplicates and no passwrords under 8 char 
 return as JSON web token)
--Secure paswword (encryption)
+-Secure password (encryption)
 -Retrieve list of all activities from DB
 -Build list of routines (arr of activities)
 
@@ -11,12 +11,13 @@ return as JSON web token)
 
 
 //Kenny to do
-
+-Build DB
 
 
 
 //Cade to do
-
+-Build DB
 
 
 //Dale to do
+-Build DB
