@@ -1,7 +1,6 @@
 const pg = require("pg");
 
-const client = new pg.Client(`postgres://localhost5432/fitness-dev`);
+const Client = new pg.Client(`postgres://localhost:5432/fitness-dev`);
 
-module.exports = {
-  client,
-};
+module.exports = { Client }
+
