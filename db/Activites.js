@@ -48,12 +48,14 @@ async function updateActivities(id, fields = {}) {
   console.log(id);
 
   // set Object.keys and Object.values to variables and use those instead.
+  const keys = Object.keys;
+  const values = Object.values;
 
-  const stringify = Object.keys(fields)
+  const stringify = keys(fields)
     .map((el, ind) => `${el} = $${ind + 1}`)
     .join(", ");
   console.log(stringify);
-  console.log(Object.values(fields));
+  console.log(values(fields));
   try {
     await client.query(
       `
