@@ -1,10 +1,11 @@
 {
   "dependencies": {
     "bcrypt": "^5.1.0",
-    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
-    "pg": "^8.8.0"
+    "router": "^1.3.7"
   },
   "name": "fitnesstacker",
   "description": "",
@@ -12,6 +13,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "seed": "node ./db/seedData",
     "start": "nodemon index.js"
   },
   "repository": {
@@ -26,6 +28,8 @@
   },
   "homepage": "https://github.com/theBoisFitnessTracker/FitnessTacker#readme",
   "devDependencies": {
-    "nodemon": "^2.0.20"
+    "express": "^4.18.2",
+    "nodemon": "^2.0.20",
+    "pg": "^8.8.0"
   }
 }
