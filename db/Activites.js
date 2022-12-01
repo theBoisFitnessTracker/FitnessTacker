@@ -1,10 +1,10 @@
-const { Client } = require("./index");
+const { client } = require("./index");
 
 async function createActivities({ name, description }) {
   try {
     const {
       rows: [routine],
-    } = await Client.query(
+    } = await client.query(
       `
             INSERT INTO activities(name, description)
             VALUES ($1, $2)
@@ -20,7 +20,7 @@ async function createActivities({ name, description }) {
 }
 async function getAllActivities() {
   try {
-    const { rows } = await Client.query(`
+    const { rows } = await client.query(`
         SELECT * FROM activities;
         `);
     console.log(rows);
@@ -32,7 +32,7 @@ async function getAllActivities() {
 async function getActivitesById(id) {
   try {
     console.log(id);
-    const { rows } = await Client.query(
+    const { rows } = await client.query(
       `
         SELECT * FROM activities
         WHERE "id" = $1;`,
@@ -46,19 +46,22 @@ async function getActivitesById(id) {
 }
 async function updateActivities(id, fields = {}) {
   console.log(id);
+
+  // set Object.keys and Object.values to variables and use those instead.
+
   const stringify = Object.keys(fields)
     .map((el, ind) => `${el} = $${ind + 1}`)
     .join(", ");
   console.log(stringify);
   console.log(Object.values(fields));
   try {
-    await Client.query(
+    await client.query(
       `
         UPDATE activities
         SET ${stringify}
         WHERE "id" = ${id};
-        `,
-      Object.values(fields)
+        `, // keys.length + 1 replaces ${id}
+      Object.values(fields) // use values here, and spread it into an array, with id at the end. [...values, id]
     );
   } catch (error) {
     console.log(error);

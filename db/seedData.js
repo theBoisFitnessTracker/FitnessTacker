@@ -1,4 +1,4 @@
-const { Client } = require("./index");
+const { client } = require("./index");
 const {
   createActivities,
   getAllActivities,
@@ -12,7 +12,7 @@ async function dropTables() {
     console.log("Starting to drop tables...");
 
     // have to make sure to drop in correct order
-    await Client.query(`
+    await client.query(`
 
         DROP TABLE IF EXISTS routineactivities; 
         DROP TABLE IF EXISTS routines;
@@ -29,7 +29,7 @@ async function dropTables() {
 }
 async function createTables() {
   try {
-    await Client.query(`
+    await client.query(`
       CREATE TABLE users(
         id SERIAL PRIMARY KEY,
         username VARCHAR(255) UNIQUE NOT NULL,
@@ -61,7 +61,7 @@ async function createTables() {
 }
 
 async function TestDB() {
-  Client.connect();
+  client.connect();
   await dropTables();
   await createTables();
   await createUser({
@@ -82,8 +82,11 @@ async function TestDB() {
   });
   // await getActivitesById(1);
   // // await getAllActivities();
-  await updateActivities(1, {name: "Branch Chest", description: "Eating Branches"})
-  Client.end();
+  await updateActivities(1, {
+    name: "Branch Chest",
+    description: "Eating Branches",
+  });
+  client.end();
 }
 
 TestDB();

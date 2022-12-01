@@ -1,4 +1,4 @@
-const { Client } = require("./index")
+const { client } = require("./index");
 
 /**
  * USER Methods
@@ -7,8 +7,8 @@ const { Client } = require("./index")
 async function createUser({ username, password }) {
   try {
     const {
-      rows: [user]
-    } = await Client.query(
+      rows: [user],
+    } = await client.query(
       `
       INSERT INTO users(username, password) 
       VALUES($1, $2) 
@@ -25,6 +25,8 @@ async function createUser({ username, password }) {
 }
 
 async function updateUser(id, fields = {}) {
+  // make values for Object.keys and Object.values
+
   // build the set string
   const setString = Object.keys(fields)
     .map((key, index) => `"${key}"=$${index + 1}`)
@@ -38,14 +40,14 @@ async function updateUser(id, fields = {}) {
   try {
     const {
       rows: [user],
-    } = await Client.query(
+    } = await client.query(
       `
       UPDATE users
       SET ${setString}
       WHERE id=${id}
       RETURNING *;
     `,
-      Object.values(fields)
+      Object.values(fields) // see Activities.js
     );
 
     return user;
@@ -56,10 +58,15 @@ async function updateUser(id, fields = {}) {
 
 async function getAllUsers() {
   try {
-    const { rows } = await Client.query(`
+    const { rows } = await client.query(`
       SELECT username
       FROM users;
     `);
+
+    // get * from users, then users.map((user) => {
+    //   delete user.password
+    //   return user
+    // })
 
     return rows;
   } catch (error) {
@@ -67,9 +74,7 @@ async function getAllUsers() {
   }
 }
 
-
 module.exports = {
-  Client,
   createUser,
   updateUser,
   getAllUsers,

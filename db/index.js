@@ -1,6 +1,5 @@
 const pg = require("pg");
 
-const Client = new pg.Client(`postgres://localhost:5432/fitness-dev`);
+const client = new pg.Client(`postgres://localhost:5432/fitness-dev`); // process.env.DB_URL or string
 
-module.exports = { Client }
-
+module.exports = { client };
