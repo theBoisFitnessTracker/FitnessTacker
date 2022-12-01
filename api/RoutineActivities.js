@@ -2,5 +2,5 @@
 const express = require("express");
 const raRouter = express.Router();
 // export subrouter below here
-
-module.exports = raRouter
+// Kenny: build out express get, post, patch, delete routes
+module.exports = raRouter;
