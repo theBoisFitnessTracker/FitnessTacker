@@ -3,4 +3,7 @@ const express = require("express");
 const activitiesRouter = express.Router();
 // export subrouter below here
 
-module.exports = activitiesRouter
+// Kenny: build out express get, post, patch, delete routes
+activitiesRouter.get("/", (req, res, next) => {});
+
+module.exports = activitiesRouter;

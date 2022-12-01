@@ -73,6 +73,8 @@ async function getAllUsers() {
     throw error;
   }
 }
+// getUserById
+// getUserByUsername
 
 module.exports = {
   createUser,
