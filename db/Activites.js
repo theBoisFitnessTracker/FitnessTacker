@@ -48,14 +48,12 @@ async function updateActivities(id, fields = {}) {
   console.log(id);
 
   // set Object.keys and Object.values to variables and use those instead.
-  const keys = Object.keys;
-  const values = Object.values;
+  const keys = Object.keys(fields);
+  const values = Object.values(fields);
 
-  const stringify = keys(fields)
-    .map((el, ind) => `${el} = $${ind + 1}`)
-    .join(", ");
-  console.log(stringify);
-  console.log(values(fields));
+  const stringify = keys.map((el, ind) => `${el} = $${ind + 1}`).join(", ");
+  // console.log(stringify);
+  // console.log(values);
   try {
     await client.query(
       `
@@ -63,7 +61,7 @@ async function updateActivities(id, fields = {}) {
         SET ${stringify}
         WHERE "id" = ${id};
         `, // keys.length + 1 replaces ${id}
-      Object.values(fields) // use values here, and spread it into an array, with id at the end. [...values, id]
+      values // use values here, and spread it into an array, with id at the end. [...values, id]
     );
   } catch (error) {
     console.log(error);
