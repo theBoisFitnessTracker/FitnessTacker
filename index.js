@@ -20,7 +20,10 @@ app.use(express.urlencoded({ extended: false }));
 // consume your apiRouter here
 app.use('/api', apiRouter)
 
-const PORT = 3000; // get PORT from process.env or if process.env.PORT doesn't exist, then 3000
+// get PORT from process.env or if process.env.PORT doesn't exist, then 3000
+// || operator: if any of these things are true return the first true thing
+// && operator: all things are true it gives you the last thing in the list otherwise returns false
+const PORT = process.env.PORT || 3000; 
 app.listen(PORT, () => {
   console.log(`we are up and running in port ${PORT}`);
 });
