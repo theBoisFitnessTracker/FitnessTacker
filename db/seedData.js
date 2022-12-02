@@ -14,9 +14,9 @@ async function dropTables() {
     // have to make sure to drop in correct order
     await client.query(`
 
-        DROP TABLE IF EXISTS routineactivities; 
-        DROP TABLE IF EXISTS routines;
+        DROP TABLE IF EXISTS routine_activities; 
         DROP TABLE IF EXISTS activities;
+        DROP TABLE IF EXISTS routines;
         DROP TABLE IF EXISTS users;
         
       `);
@@ -47,27 +47,52 @@ async function createTables() {
         name VARCHAR(255) UNIQUE NOT NULL,
         goal text NOT NULL
       );
-      CREATE TABLE routineactivities(
+      CREATE TABLE routine_activities(
         id SERIAL PRIMARY KEY,
         routineid INTEGER REFERENCES routines(id),
         activityid INTEGER REFERENCES activities(id),
         duration INTEGER NOT NULL,
         count INTEGER NOT NULL
       );
-    `);
+    `); // ADD UNIQUE (column1, column2)
+    // 1, 1, 2, 10, 20
+    // 2, 1, 3, 5, 10
+    // 3, 2, 3, 5, 10
+    // 4, 1, 3, 10, 30 x1, 3 already exists
   } catch (error) {
     console.log(error);
   }
 }
+
+async function createUsersPromiseArray(num) {
+  const array = [];
+  for (let i = 1; i <= num; i++) {
+    const user = createUser({
+      username: `FartingCHickenHead${i}`,
+      password: `LammasOnSunday${i}`,
+    });
+    array.push(user);
+  }
+  const result = await Promise.all(array);
+  console.log(
+    `added ${
+      result.filter((u) => (u == undefined ? false : true)).length
+    } number of users`
+  );
+  return result;
+}
+
+// do this ^ for routines, activities (5) hardcode a few routine_activities.
 
 async function TestDB() {
   client.connect();
   await dropTables();
   await createTables();
   await createUser({
-    username: "FartingCHickenHead",
-    password: "LammasOnSunday",
+    username: "FartingCHickenHead1",
+    password: "LammasOnSunday1",
   });
+  await createUsersPromiseArray(20);
   await createActivities({
     name: "Bench press",
     description: "Barbell bench press for pectoral muscles",
@@ -86,6 +111,17 @@ async function TestDB() {
     name: "Branch Chest",
     description: "Eating Branches",
   });
+
+  // create Routines
+
+  // update routines
+
+  // delete a routine
+
+  // create routine_activities
+
+  // update routine_activities
+
   client.end();
 }
 

@@ -4,7 +4,7 @@ const { client } = require("./index");
  * USER Methods
  */
 
-async function createUser({ username, password }) {
+async function createUser({username, password}) {
   try {
     const {
       rows: [user],
@@ -17,7 +17,7 @@ async function createUser({ username, password }) {
     `,
       [username, password]
     );
-
+    console.log(`new User: `, user);
     return user;
   } catch (error) {
     throw error;
@@ -48,7 +48,7 @@ async function updateUser(id, fields = {}) {
       RETURNING *;
     `,
       Object.values(fields) // see Activities.js
-    );
+    ); // fix id=${id} issue
 
     return user;
   } catch (error) {

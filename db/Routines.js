@@ -3,123 +3,137 @@ const { client } = require("./index");
 // create db functions here
 
 // getRoutineByID** (needs activities attached)
-async function getRoutineByID(id){
-    try {
-        const {rows: [routine]} = await client.query(`
+async function getRoutineByID(id) {
+  try {
+    const {
+      rows: [routine],
+    } = await client.query(
+      `
         SELECT * 
         FROM routines
-        WHERE 'id' = $1;`, [id])
-        return routine;
-    } catch (error) {
-        console.log(error)
-    }
+        WHERE 'id' = $1;`,
+      [id]
+    );
+    return routine;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 // getRoutinesWithoutActivities * (get all)
-async function getRoutinesWithoutActivities(id){
-    try {
-        const {rows: [routine]} = await client.query(`
-        WITH routines AS (
-            SELECT *
-            FROM routines
-         )
+async function getRoutinesWithoutActivities() {
+  try {
+    const { rows } = await client.query(`
          SELECT *
-         FROM routines
-         WHERE activies IS = 0;`, [id])
-        return routine;
-    } catch (error) {
-        console.log(error)
-    }
+         FROM routines;`);
+    return routine;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-
 // getAllPublicRoutines * (get all isPublic true)(needs activities attached)
-async function getAllPublicRoutines(id){
-    try {
-        const {rows: [routine]} = await client.query(`
-        WITH routines AS (
-            SELECT *
-            FROM routines
-         )
+async function getAllPublicRoutines() {
+  try {
+    const { rows: routine } = await client.query(`
          SELECT *
          FROM routines
-         WHERE ispublic IS true;`, [id])
-        return routine;
-    } catch (error) {
-        console.log(error)
-    }
+         WHERE ispublic IS true;`);
+    return routine;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 // getAllRoutinesByUser ** (needs activities attached)
-async function getAllRoutinesByUser(id){
-    try {
-        const {rows: [routine]} = await client.query(`
-        WITH routines AS (
-            SELECT *
-            FROM routines
-         )
+async function getAllRoutinesByUser(userId) {
+  try {
+    const { rows: routines } = await client.query(
+      `
          SELECT *
          FROM routines
-         WHERE 'id' = $1;`, [id])
-        return routine;
-    } catch (error) {
-        console.log(error)
-    }
+         WHERE 'id' = $1;`,
+      [userId]
+    );
+    return routines;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-
 // getPublicRoutinesByUser * (isPublic true)(activities attached)
-async function getPublicRoutinesByUser(id){
-    try {
-        const {rows: [routine]} = await client.query(`
-        WITH routines AS (
-            SELECT *
-            FROM routines
-         )
+async function getPublicRoutinesByUser(userId) {
+  try {
+    const { rows: routines } = await client.query(
+      `
          SELECT *
          FROM routines
-         WHERE userid = $1;`, [id])
-        return routine;
-    } catch (error) {
-        console.log(error)
-    }
+         WHERE userid = $1 AND ispublic IS true ;`,
+      [userId]
+    );
+    return routines;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 // getPublicRoutinesByActivity * (isPublic true)(activities attached)
+async function getPublicRoutinesByActivity(activityId) {
+  try {
+    const { rows: routines } = await client.query(
+      `
+        SELECT * 
+        FROM routines
+        WHERE ispublic IS true 
+        AND activityid = $1;
+        `,
+      [activityId]
+    );
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 // createRoutine **
-async function createRoutine({name,goal}){
-    try{
-        const {rows: [routine]} = await client.query(`
+async function createRoutine({ name, goal }) {
+  try {
+    const {
+      rows: [routine],
+    } = await client.query(
+      `
         INSERT INTO routines(name, goal)
         VALUES ($1,$2)
-        RETURNING *;`, [name,goal])
-        return routine
-    }catch(error){
-        console.log(error)
-    }
+        RETURNING *;`,
+      [name, goal]
+    );
+    return routine;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 // updateRoutine **
-async function updateRoutine(id, fields = {}){
-    const keys = Object.keys(fields)
-    const values = Object.values(fields)
-    if (keys.length === 0){
-        return
-    }
+async function updateRoutine(id, fields = {}) {
+  const keys = Object.keys(fields);
+  const values = Object.values(fields);
+  if (keys.length === 0) {
+    return;
+  }
 
-    const colums = keys.map((el, index) => `"${el}" = $${index + 1}` ).join(", ")
+  const columns = keys.map((el, index) => `"${el}" = $${index + 1}`).join(", ");
 
-try {
-    const { rowCount } = await client.query(`
+  try {
+    const { rowCount } = await client.query(
+      `
     UPDATE product
-    SET ${colums}
+    SET ${columns}
     WHERE "id" = ${id}
     RETURNING *;`,
-    values)
-} catch (error) {
-    console.log(error)
-}
+      values
+    ); // fix Id, look at routine_activities
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 // destroyRoutine **

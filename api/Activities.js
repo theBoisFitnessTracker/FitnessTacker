@@ -6,4 +6,12 @@ const activitiesRouter = express.Router();
 // Kenny: build out express get, post, patch, delete routes
 activitiesRouter.get("/", (req, res, next) => {});
 
+activitiesRouter.get('/:activityId', (req, res, next) => {})
+
+// posts
+
+// patches
+
+// deletes
+
 module.exports = activitiesRouter;
