@@ -1,11 +1,11 @@
-const { client } = require("./index");
 const {
+  client,
   createActivities,
   getAllActivities,
   getActivitesById,
   updateActivities,
-} = require("./Activites");
-const { createUser } = require("./Users");
+  createUser,
+} = require("./index.js");
 
 async function dropTables() {
   try {

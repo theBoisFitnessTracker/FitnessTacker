@@ -1,5 +1,5 @@
 // require client from index
-const { client } = require("./index");
+const { client } = require("./client.js");
 // create db functions here
 
 // getRoutineByID** (needs activities attached)
@@ -139,3 +139,14 @@ async function updateRoutine(id, fields = {}) {
 // destroyRoutine **
 
 // module.export here
+
+module.exports = {
+  getRoutineByID,
+  getRoutinesWithoutActivities,
+  getAllPublicRoutines,
+  getAllRoutinesByUser,
+  getPublicRoutinesByUser,
+  getPublicRoutinesByActivity,
+  createRoutine,
+  updateRoutine,
+};

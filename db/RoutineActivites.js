@@ -1,5 +1,5 @@
 // require client from index
-const { client } = require("./index");
+const { client } = require("./client.js");
 // create db functions here
 
 //getRoutineActivityById *
