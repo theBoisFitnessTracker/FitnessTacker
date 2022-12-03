@@ -21,24 +21,6 @@ async function getRoutineActivityById(id) {
   }
 }
 
-//getRoutineActivitiesByRoutine *
-async function getRoutineActivityById(id) {
-  try {
-    const {
-      rows: [routineActivity],
-    } = await client.query(
-      `
-        SELECT * 
-        FROM routine_activites
-        WHERE 'id' = $1;`,
-      [id]
-    );
-    return routineActivity;
-  } catch (error) {
-    console.log(error);
-  }
-}
-
 // addActivityToRoutine ** (do this in javascript)
 async function addActivityToRoutine(routineid, activityid, duration, count) {
   //need set and duration
@@ -116,7 +98,7 @@ async function updateRoutineActivity(id, fields = {}) {
 // module.export here
 module.exports = {
   getRoutineActivityById,
-  getRoutineActivityById,
+  getRoutineActivitiesByRoutine,
   addActivityToRoutine,
   updateRoutineActivity,
 };

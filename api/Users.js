@@ -1,19 +1,47 @@
 const express = require("express");
 const usersRouter = express.Router();
-const { createUser, getAllUsers, getUserByUsername } = require("../db");
+const { createUser, getAllUsers, getUserByUsername, getPublicRoutinesByUser } = require("../db");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 usersRouter.get("/", async (req, res, next) => {
   try {
     const users = await getAllUsers();
-
+    if (users){
     res.status(200).send({
       users,
-    });
+    });} else {
+      const error = {
+        name: "",
+        message: ""
+      }
+      res.status(400).send(error)
+    }
   } catch (error) {
     console.error(error);
     res.status(500).send({ error });
+  }
+});
+
+usersRouter.get("/:username/routines", async (req, res, next) => {
+  try {
+    // get username from params
+    // get user by username from db
+    // get routineby ID
+    const username = req.params.username
+    const user = await getUserByUsername({username})
+    const routines = await getPublicRoutinesByUser({ userId: user.id });
+    if (routine) {
+      res.status(200).send(routines)
+    } else {
+      const error = {
+        name: "",
+        message: "",
+      };
+      res.status(400).send(error);
+    }
+  } catch (error) {
+    res.status(500).send(error);
   }
 });
 

@@ -4,7 +4,7 @@ const { client } = require("./client.js");
  * USER Methods
  */
 
-async function createUser({username, password}) {
+async function createUser({ username, password }) {
   try {
     const {
       rows: [user],
@@ -26,16 +26,17 @@ async function createUser({username, password}) {
 
 async function updateUser(id, fields = {}) {
   // make values for Object.keys and Object.values
+  const keys = Object.keys(fields)
+  const values = Object.values(fields)
 
   // build the set string
-  const setString = Object.keys(fields)
+  const setString = keys
     .map((key, index) => `"${key}"=$${index + 1}`)
     .join(", ");
 
   // return early if this is called without fields
-  if (setString.length === 0) {
-    return;
-  }
+  if (setString.length === 0) return
+  
 
   try {
     const {
@@ -44,12 +45,12 @@ async function updateUser(id, fields = {}) {
       `
       UPDATE users
       SET ${setString}
-      WHERE id=${id}
+      WHERE id=${keys.length + 1}
       RETURNING *;
     `,
-      Object.values(fields) // see Activities.js
+      [...values, id] // see Activities.js
     ); // fix id=${id} issue
-
+    delete user.password
     return user;
   } catch (error) {
     throw error;
@@ -74,10 +75,47 @@ async function getAllUsers() {
   }
 }
 // getUserById
+
+async function getUserById({ id }) {
+  try {
+    const {
+      rows: [user],
+    } = await client.query(
+      `
+      SELECT * FROM user
+      WHERE id = $1
+    ;`,
+      [id]
+    );
+    delete user.password;
+    return user;
+  } catch (error) {
+    console.log(error);
+  }
+}
 // getUserByUsername
+async function getUserByUsername({ username }) {
+  try {
+    const {
+      rows: [user],
+    } = await client.query(
+      `
+      SELECT * FROM user
+      WHERE username = $1
+    ;`,
+      [id]
+    );
+    delete user.password;
+    return user;
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 module.exports = {
   createUser,
   updateUser,
   getAllUsers,
+  getUserById,
+  getUserByUsername,
 };
