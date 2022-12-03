@@ -19,6 +19,7 @@ const routineRouter = require('./Routines');
 
 
 
+
 apiRouter.use('/activities', activitiesRouter);
 apiRouter.use('/routines', routineRouter);
 apiRouter.use('/users', usersRouter);
