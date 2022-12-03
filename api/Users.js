@@ -2,17 +2,18 @@ const express = require("express");
 const usersRouter = express.Router();
 const { createUser, getAllUsers, getUserByUsername } = require("../db");
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcrypt");
 
 usersRouter.get("/", async (req, res, next) => {
   try {
     const users = await getAllUsers();
 
-    res.send({
+    res.status(200).send({
       users,
     });
-  } catch ({ name, message }) {
-    next({ name, message });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error });
   }
 });
 
@@ -21,10 +22,12 @@ usersRouter.post("/login", async (req, res, next) => {
 
   // request must have both
   if (!username || !password) {
-    next({
+    const error = {
       name: "MissingCredentialsError",
       message: "Please supply both a username and password",
-    });
+    };
+    console.log(error);
+    res.status(206).send({ error });
   }
 
   try {
@@ -42,19 +45,21 @@ usersRouter.post("/login", async (req, res, next) => {
         }
       );
 
-      res.send({
+      res.status(200).send({
         message: "you're logged in!",
         token,
       });
     } else {
-      next({
+      const error = {
         name: "IncorrectCredentialsError",
         message: "Username or password is incorrect",
-      });
+      };
+      console.log(error);
+      res.send({ error });
     }
   } catch (error) {
     console.log(error);
-    next(error);
+    res.status(500).send({ error });
   }
 });
 
@@ -65,7 +70,7 @@ usersRouter.post("/register", async (req, res, next) => {
     const _user = await getUserByUsername(username);
 
     if (_user) {
-      next({
+      res.status(409).send({
         name: "UserExistsError",
         message: "A user by that username already exists",
       });
@@ -87,12 +92,12 @@ usersRouter.post("/register", async (req, res, next) => {
       }
     );
 
-    res.send({
+    res.status(200).send({
       message: "thank you for signing up",
       token,
     });
-  } catch ({ name, message }) {
-    next({ name, message });
+  } catch (error) {
+    res.status(500).send(error);
   }
 });
 
@@ -107,6 +112,7 @@ async function hashedPassword(password) {
     console.log(`I am the hashed value: `, hashedValue);
   } catch (error) {
     console.log(error);
+    res.send({ error });
   }
 }
 // callling the hashedPassword function to show in our terminal/console
