@@ -101,21 +101,25 @@ Router.patch('/updateActivity/:activityId', requireUser, async (req, res, next) 
 })
 
 
-// deletes
-activitiesRouter.delete('/deletedActivity/:activityId', requireUser, async (req, res, next) => {
-    const activityId = req.params.activityId;
-    const userId = req.params.userId;
+// delete
+// activitiesRouter.delete('/deletedActivity/:activityId', requireUser, async (req, res, next) => {
+//     const activityId = req.params.activityId;
+//     const userId = req.params.userId;
 
-    try {
-        const deletedActivity = await deleteActivity(activityId, userId)
-        res.send({
-            name: "Failed",
-            message: "Unable to delete activity"
-        })
-    } catch (error) {
-        console.log(error)
-    }
-})
+//     try {
+//         const deletedActivity = await deleteActivity(activityId, userId)
+//         if (deletedActivity) {
+//             console.log("activity deleted")
+//         }else{
+//         res.send({
+//             name: "Failed",
+//             message: "Unable to delete activity"
+//         })
+//     }
+//     } catch (error) {
+//         console.log(error)
+//     }
+// })
 
 
 module.exports = activitiesRouter;
