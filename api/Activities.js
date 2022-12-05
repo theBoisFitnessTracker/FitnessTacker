@@ -33,7 +33,7 @@ activitiesRouter.get('/:activityId', async (req, res, next) => {
     }
 })
 // posts
-activitiesRouter.post("/newactivity/:activityId/:userId", requireUser, async (req, res, next) => {
+activitiesRouter.post("/newactivity/:activityId", requireUser, async (req, res, next) => {
     const {name, description} = req.body
     const reviewData = {}
 
@@ -57,7 +57,7 @@ activitiesRouter.post("/newactivity/:activityId/:userId", requireUser, async (re
 })
 // patches
 
-Router.patch('/updateActivity/:activityId/:userId', requireUser, async (req, res, next) => {
+Router.patch('/updateActivity/:activityId', requireUser, async (req, res, next) => {
     const activityId = req.params.activityId;
     const userId = req.params.userId;
     const {name, description} = req.body
@@ -91,7 +91,7 @@ Router.patch('/updateActivity/:activityId/:userId', requireUser, async (req, res
 
 
 // deletes
-activitiesRouter.delete('/deletereview/:activityId/:userId', requireUser, async (req, res, next) => {
+activitiesRouter.delete('/deletereview/:activityId', requireUser, async (req, res, next) => {
     const activityId = req.params.activityId;
     const userId = req.params.userId;
 
