@@ -2,6 +2,17 @@
 const express = require("express");
 const { getAllActivities, getActivitiesById, createActivity, updateActivity, deleteActivity } = require("../db/Activites");
 const activitiesRouter = express.Router();
+
+function requireUser(req, res, next){
+    if(!req.user){
+        next({
+            name: "unknownUser",
+            message: "You must be logged in!"
+        })
+    }
+    next()
+}
+
 // export subrouter below here
 
 // Kenny: build out express get, post, patch, delete routes
@@ -91,7 +102,7 @@ Router.patch('/updateActivity/:activityId', requireUser, async (req, res, next) 
 
 
 // deletes
-activitiesRouter.delete('/deletereview/:activityId', requireUser, async (req, res, next) => {
+activitiesRouter.delete('/deletedActivity/:activityId', requireUser, async (req, res, next) => {
     const activityId = req.params.activityId;
     const userId = req.params.userId;
 
